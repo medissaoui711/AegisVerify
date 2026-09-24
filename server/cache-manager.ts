@@ -13,13 +13,11 @@ export class InMemoryCacheManager {
   private hitCount: number = 0;
   private missCount: number = 0;
   private maxEntries: number;
+  private lastCleanup: number = Date.now();
 
   constructor(defaultTtlMs: number = 24 * 60 * 60 * 1000, maxEntries: number = 1000) {
     this.defaultTtlMs = defaultTtlMs;
     this.maxEntries = maxEntries;
-
-    // Periodic cleanup of expired items every 10 minutes
-    setInterval(() => this.cleanup(), 10 * 60 * 1000).unref?.();
   }
 
   private generateKey(type: string, value: string): string {
@@ -27,6 +25,14 @@ export class InMemoryCacheManager {
   }
 
   public get(type: string, value: string): SecurityReport | null {
+    const now = Date.now();
+
+    // Lazy cleanup of expired items on-demand
+    if (now - this.lastCleanup > 10 * 60 * 1000 || this.cache.size > this.maxEntries) {
+      this.cleanup();
+      this.lastCleanup = now;
+    }
+
     const key = this.generateKey(type, value);
     const entry = this.cache.get(key);
 

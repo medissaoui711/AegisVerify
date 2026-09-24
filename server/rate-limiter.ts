@@ -14,27 +14,32 @@ export class InMemoryRateLimiter {
   private records: Map<string, ClientRecord> = new Map();
   private maxRequests: number;
   private windowMs: number;
+  private lastCleanup: number = Date.now();
 
   constructor(maxRequests: number = 15, windowMs: number = 60 * 1000) {
     this.maxRequests = maxRequests;
     this.windowMs = windowMs;
-
-    // Periodic cleanup of stale IP records every 5 minutes
-    setInterval(() => this.cleanup(), 5 * 60 * 1000).unref?.();
   }
 
   public check(ip: string, simulateLimit: boolean = false): RateLimitStatus {
+    const now = Date.now();
+
+    // Lazy cleanup of stale records on-demand without global interval timers
+    if (now - this.lastCleanup > 5 * 60 * 1000 || this.records.size > 500) {
+      this.cleanup();
+      this.lastCleanup = now;
+    }
+
     if (simulateLimit) {
       return {
         allowed: false,
         limit: this.maxRequests,
         remaining: 0,
-        resetTimeMs: Date.now() + 45 * 1000,
+        resetTimeMs: now + 45 * 1000,
         retryAfterSec: 45,
       };
     }
 
-    const now = Date.now();
     const windowStart = now - this.windowMs;
 
     let record = this.records.get(ip);
