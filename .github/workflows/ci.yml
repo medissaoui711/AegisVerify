@@ -1,0 +1,70 @@
+name: AegisVerify CI & Security Matrix
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-audit:
+    name: Typecheck, Build & Security Audit
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript Typecheck & Lint
+        run: npm run lint
+
+      - name: Build Production Bundle (Vite)
+        run: npm run build
+
+      - name: Verify 18-Test Security Audit Suite
+        run: |
+          echo "Starting AegisVerify Node.js Server in Background..."
+          npm run start &
+          SERVER_PID=$!
+          
+          # Wait for server health endpoint
+          echo "Waiting for http://localhost:3000/api/health..."
+          for i in {1..30}; do
+            if curl -s http://localhost:3000/api/health | grep -q '"status":"healthy"'; then
+              echo "Server is healthy!"
+              break
+            fi
+            sleep 1
+          done
+
+          echo "Running Full Security Audit Suite..."
+          AUDIT_RESPONSE=$(curl -s http://localhost:3000/api/audit/run)
+          echo "$AUDIT_RESPONSE"
+          
+          # Verify 100% success rate
+          if echo "$AUDIT_RESPONSE" | grep -q '"successRatePercent":100'; then
+            echo "✅ 18/18 Security Tests Passed with 100% Success Rate!"
+          else
+            echo "❌ Security Audit Failed or didn't reach 100%!"
+            kill $SERVER_PID
+            exit 1
+          fi
+
+          kill $SERVER_PID

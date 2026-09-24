@@ -1,5 +1,6 @@
 # AegisVerify v1.0.0 — Security Verification & Threat Intelligence Micro-Tool
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-medissaoui711%2FAegisVerify-181717?style=flat-square&logo=github)](https://github.com/medissaoui711/AegisVerify)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-cyan?style=flat-square)](https://react.dev/)
 [![Express](https://img.shields.io/badge/Express-4.x-emerald?style=flat-square)](https://expressjs.com/)
@@ -9,6 +10,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
 
 > **Analyze emails, phone numbers, and URLs through a security-focused, hardened verification pipeline.**
+> 
+> 🔗 **GitHub Repository:** [https://github.com/medissaoui711/AegisVerify](https://github.com/medissaoui711/AegisVerify)
 
 AegisVerify is an open-source, production-grade security micro-tool and API gateway engineered as a **Full-Stack Application Security & Threat Intelligence Portfolio Case Study**. It isolates sensitive third-party credentials, mitigates SSRF and DNS-rebinding attacks, regulates client traffic via sliding-window rate limiting, and normalizes disparate risk telemetry into a deterministic, auditable canonical schema.
 
@@ -227,8 +230,8 @@ Portfolio & UX
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/aegis-verify.git
-cd aegis-verify
+git clone https://github.com/medissaoui711/AegisVerify.git
+cd AegisVerify
 
 # 2. Install dependencies
 npm install
