@@ -4,12 +4,15 @@ import { InputType, ThreatLevel } from '../types.js';
 let aiClient: GoogleGenAI | null = null;
 
 function getAiClient(): GoogleGenAI | null {
-  if (!process.env.GEMINI_API_KEY) {
+  const apiKey = (typeof process !== 'undefined' && process.env ? process.env.GEMINI_API_KEY : undefined) || 
+    (typeof globalThis !== 'undefined' && (globalThis as any).GEMINI_API_KEY ? (globalThis as any).GEMINI_API_KEY : undefined);
+    
+  if (!apiKey) {
     return null;
   }
   if (!aiClient) {
     aiClient = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
+      apiKey,
       httpOptions: {
         headers: {
           'User-Agent': 'aistudio-build',

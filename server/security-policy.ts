@@ -1,4 +1,16 @@
-import net from 'net';
+// Zero-dependency native IPv4 validator compatible with Edge/Cloudflare Workers and Node.js
+function isIPv4(host: string): boolean {
+  if (typeof host !== 'string') return false;
+  const parts = host.split('.');
+  if (parts.length !== 4) return false;
+  for (const part of parts) {
+    if (!/^\d{1,3}$/.test(part)) return false;
+    const num = parseInt(part, 10);
+    if (num < 0 || num > 255) return false;
+    if (part.length > 1 && part.startsWith('0')) return false;
+  }
+  return true;
+}
 
 export interface SsrfCheckResult {
   isBlocked: boolean;
@@ -203,7 +215,7 @@ export function validateSsrfAndAbuse(inputUrlOrHost: string): SsrfCheckResult {
       const ipInSubdomain = hostname.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
       if (ipInSubdomain) {
         const extractedIp = ipInSubdomain[1];
-        if (net.isIPv4(extractedIp)) {
+        if (isIPv4(extractedIp)) {
           for (const range of PRIVATE_IP_RANGES) {
             if (isIpInSubnet(extractedIp, range.start, range.end)) {
               return {
@@ -243,7 +255,7 @@ export function validateSsrfAndAbuse(inputUrlOrHost: string): SsrfCheckResult {
   ) {
     if (cleanIpv6.startsWith('::ffff:')) {
       const mappedIp = cleanIpv6.replace('::ffff:', '');
-      if (net.isIPv4(mappedIp)) {
+      if (isIPv4(mappedIp)) {
         for (const range of PRIVATE_IP_RANGES) {
           if (isIpInSubnet(mappedIp, range.start, range.end)) {
             return {
@@ -266,7 +278,7 @@ export function validateSsrfAndAbuse(inputUrlOrHost: string): SsrfCheckResult {
   }
 
   // 5. Standard IPv4 Private subnet check
-  if (net.isIPv4(hostname)) {
+  if (isIPv4(hostname)) {
     for (const range of PRIVATE_IP_RANGES) {
       if (isIpInSubnet(hostname, range.start, range.end)) {
         return {
@@ -281,7 +293,7 @@ export function validateSsrfAndAbuse(inputUrlOrHost: string): SsrfCheckResult {
 
   // 6. Alternative IP notations: Hex, Decimal DWORD, Octal, Shorthand (e.g. 127.1, 2130706433, 0x7f000001)
   const altIp = tryParseAlternativeIpv4(hostname);
-  if (altIp && net.isIPv4(altIp)) {
+  if (altIp && isIPv4(altIp)) {
     for (const range of PRIVATE_IP_RANGES) {
       if (isIpInSubnet(altIp, range.start, range.end)) {
         return {

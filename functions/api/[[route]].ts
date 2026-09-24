@@ -20,6 +20,9 @@ const SECURITY_HEADERS = {
 
 export async function onRequest(context: { request: Request; env: Env; params: { route?: string[] } }) {
   const { request, env } = context;
+  if (env?.GEMINI_API_KEY) {
+    (globalThis as any).GEMINI_API_KEY = env.GEMINI_API_KEY;
+  }
   const url = new URL(request.url);
   const pathname = url.pathname;
   const method = request.method;
