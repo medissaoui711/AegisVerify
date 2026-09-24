@@ -415,6 +415,22 @@ export default function App() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-slate-400">
+            <a
+              href="https://aegisverify.pages.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
+            >
+              <span>🌐 Live Demo</span>
+            </a>
+            <a
+              href="https://github.com/medissaoui711/AegisVerify"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-slate-200 transition-colors"
+            >
+              GitHub
+            </a>
             <button
               onClick={() => setActiveTab('audit')}
               className="hover:text-cyan-300 transition-colors cursor-pointer"

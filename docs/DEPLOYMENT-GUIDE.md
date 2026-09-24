@@ -6,6 +6,8 @@ Comprehensive instructions for deploying AegisVerify across multiple cloud provi
 
 ## ☁️ 1. Cloudflare Pages & Functions (Recommended)
 
+> 🌐 **Official Production Instance:** [https://aegisverify.pages.dev/](https://aegisverify.pages.dev/)
+
 AegisVerify includes out-of-the-box configurations for Cloudflare Pages (`wrangler.toml`, `public/_headers`, `functions/api/[[route]].ts`).
 
 ### Via GitHub Integration:
