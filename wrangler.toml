@@ -1,0 +1,12 @@
+name = "aegis-verify"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+[vars]
+NODE_ENV = "production"
+
+# Cloudflare Pages Build Configuration
+# Build command: npm run build
+# Build output directory: dist
+# Node.js version: 20+

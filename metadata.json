@@ -1,0 +1,7 @@
+{
+  "name": "AegisVerify - Security Micro-Tool & Threat Intelligence Proxy",
+  "description": "Full-Stack Security Micro-Tool with API proxy architecture, unified threat intelligence normalization for emails, phone numbers, and URLs, rate limiting, and in-memory caching.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
