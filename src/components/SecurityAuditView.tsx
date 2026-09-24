@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Language } from '../i18n.ts';
 import { 
   FileCheck, RefreshCw, CheckCircle2, XCircle, Terminal, 
-  Copy, Check, AlertTriangle, ShieldCheck, Bug, Zap, Globe, Lock, Cpu, Table, List
+  Copy, Check, AlertTriangle, ShieldCheck, Bug, Zap, Globe, Lock, Cpu, Table, List, ExternalLink, Image as ImageIcon
 } from 'lucide-react';
 
 interface AuditTestItem {
@@ -251,6 +251,35 @@ curl -s http://localhost:3000/api/audit/run | jq .
             <RefreshCw className={`h-4 w-4 ${isRunning ? 'animate-spin' : ''}`} />
             <span>{isAr ? 'إعادة تشغيل الـ 18 اختباراً' : 'Re-Run All 18 Verification Tests'}</span>
           </button>
+        </div>
+
+        {/* Quick Links & Direct Evidence Bar */}
+        <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-slate-400">{isAr ? 'نقطة النهاية المباشرة:' : 'Direct Endpoint:'}</span>
+            <a
+              href="/api/audit/run"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-950 border border-cyan-800/60 text-cyan-300 font-mono hover:bg-cyan-950/50 transition-colors"
+            >
+              <span>GET /api/audit/run</span>
+              <ExternalLink className="h-3 w-3 text-cyan-400" />
+            </a>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="https://drive.google.com/file/d/1242nB7ynsNO_dzLOQWUBGR_jw66FgsZi/view?usp=drivesdk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-950/80 border border-blue-700/60 text-blue-300 font-sans hover:bg-blue-900/60 transition-colors"
+            >
+              <ImageIcon className="h-3.5 w-3.5 text-blue-400" />
+              <span>{isAr ? 'لقطة شاشة لنتائج الاختبار (Google Drive)' : 'Test Execution Screenshot (Google Drive)'}</span>
+              <ExternalLink className="h-3 w-3 text-blue-400" />
+            </a>
+          </div>
         </div>
 
         {/* Audit Metrics Row */}

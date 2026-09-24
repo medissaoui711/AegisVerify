@@ -34,3 +34,14 @@ Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; 
   - `Retry-After: <seconds>`
   - `X-RateLimit-Limit: 15`
   - `X-RateLimit-Remaining: 0`
+
+---
+
+## 🧪 Security Verification Evidence & Audit Runner
+
+- **Live Production Endpoint:** [`GET /api/audit/run`](https://aegisverify.pages.dev/api/audit/run)
+- **Verified Test Suite Execution:** [View High-Res Test Screenshot (Google Drive)](https://drive.google.com/file/d/1242nB7ynsNO_dzLOQWUBGR_jw66FgsZi/view?usp=drivesdk)
+
+<div align="center">
+  <img src="https://lh3.googleusercontent.com/d/1242nB7ynsNO_dzLOQWUBGR_jw66FgsZi" alt="AegisVerify Security Audit Verification Evidence" width="100%" />
+</div>
